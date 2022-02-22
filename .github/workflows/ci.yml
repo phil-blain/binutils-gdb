@@ -59,7 +59,6 @@ jobs:
           echo 'set startup-with-shell off' > $HOME/.gdbinit
           cd ../build
 #          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
-    - name: Setup tunshell session
-#      if: ${{ failure() }}
-      run: curl -sSf https://lets.tunshell.com/init.sh | sh -s -- T Ns0udfFiqGkQFRzHyAUl5a TgyrDeRG72gLNpSIK8ihXR
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
  
