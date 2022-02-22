@@ -5,8 +5,8 @@ macos_catalina_task:
   env:
     HOMEBREW_NO_INSTALL_CLEANUP: 1
     HOMEBREW_NO_AUTO_UPDATE: 1
-    CC: gcc-11
-    CXX: g++-11
+    CC: gcc-10
+    CXX: g++-10
     CFLAGS: "-I/usr/local/include -g3 -O0"
   macos_instance:
     image: catalina-base
@@ -18,7 +18,7 @@ macos_catalina_task:
   build_script:
     - |
       mkdir ../build && cd ../build
-      ../binutils-gdb/configure             \
+      ../cirrus-ci-build/configure          \
         CC=$CC CXX=$CXX                     \
         CFLAGS="$CFLAGS" CXXFLAGS="$CFLAGS" \
         --enable-codesign=gdb_codesign      \
@@ -34,4 +34,4 @@ macos_catalina_task:
     - |
       echo 'set startup-with-shell off' > $HOME/.gdbinit
       cd ../build
-      make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
+      make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX" TESTS=gdb.base/return.exp
