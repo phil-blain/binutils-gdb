@@ -18,6 +18,8 @@ jobs:
             cxx: clang++
             pool: macos-10.15
     env:
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+      HOMEBREW_NO_AUTO_UPDATE: 1
       CC: ${{matrix.vector.cc}}
       CXX: ${{matrix.vector.cxx}}
       jobname: ${{matrix.vector.jobname}}
@@ -57,7 +59,7 @@ jobs:
           echo 'set startup-with-shell off' > $HOME/.gdbinit
           cd ../build
 #          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
-    - name: Setup tmate session
+    - name: Setup tunshell session
 #      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
+      run: curl -sSf https://lets.tunshell.com/init.sh | sh -s -- T Ns0udfFiqGkQFRzHyAUl5a TgyrDeRG72gLNpSIK8ihXR
  
