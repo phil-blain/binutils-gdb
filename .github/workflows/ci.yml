@@ -56,8 +56,8 @@ jobs:
       run: |
           echo 'set startup-with-shell off' > $HOME/.gdbinit
           cd ../build
-          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
-#    - name: Setup tmate session
+#          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
+    - name: Setup tmate session
 #      if: ${{ failure() }}
-#      uses: mxschmitt/action-tmate@v3
-#  
+      uses: mxschmitt/action-tmate@v3
+ 
