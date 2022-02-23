@@ -27,11 +27,12 @@ macos_catalina_task:
         --with-gmp=$(brew --prefix gmp)     \
         --with-libgmp-prefix=$(brew --prefix gmp) \
         --prefix=$HOME/GDB/
-      make -j 3
+      make -j 12
       make install-gdb
       tar -cf $HOME/gdb.tar $HOME/GDB
   test_script:
     - |
       echo 'set startup-with-shell off' > $HOME/.gdbinit
+      echo 'set debug darwin 12' > $HOME/.gdbinit
       cd ../build
-      make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX" TESTS=gdb.base/return.exp
+      make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX" TESTS=gdb.base/return.exp GDB_DEBUG=infrun
