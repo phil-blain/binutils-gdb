@@ -1,6 +1,6 @@
 name: CI
 
-on: [ pull_request]
+on: [push, pull_request]
 
 jobs:
   macos:
@@ -57,8 +57,13 @@ jobs:
     - name: Test
       run: |
           echo 'set startup-with-shell off' > $HOME/.gdbinit
+          echo 'set debug darwin 12' >> $HOME/.gdbinit
           cd ../build
-#          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
+          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX" TESTS=gdb.base/return.exp GDB_DEBUG=infrun
+      # make check RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX" TESTS=gdb.base/return.exp GDB_DEBUG=infrun
+      # bash <(head outputs/gdb.base/return/gdb.cmd.1 | tr -d \\n && echo -x outputs/gdb.base/return/gdb.in.1)
+      # bash <(ghead -c -1 outputs/gdb.base/return/gdb.cmd.1 && echo -x outputs/gdb.base/return/gdb.in.1)
     - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
+      uses: phil-blain/action-upterm@v1.1
+      if: ${{ failure() }}
  
