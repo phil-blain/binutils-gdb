@@ -1,0 +1,55 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  macos:
+    name: ${{matrix.vector.jobname}} (${{matrix.vector.pool}})
+    strategy:
+      fail-fast: false
+      matrix:
+        vector:
+          - jobname: ubuntu-gcc
+            cc: gcc
+            cxx: g++
+            pool: ubuntu-latest
+    env:
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      CC: ${{matrix.vector.cc}}
+      CXX: ${{matrix.vector.cxx}}
+      jobname: ${{matrix.vector.jobname}}
+      runs_on_pool: ${{matrix.vector.pool}}
+      CFLAGS: "-I/usr/local/include -g3 -O0"
+    runs-on: ${{matrix.vector.pool}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run:  sudo apt install texinfo libgmp-dev bison flex libncurses-dev libreadline-dev dejagnu
+    - name: Build
+      run: |
+          mkdir ../build && cd ../build
+          ../binutils-gdb/configure             \
+            CC=$CC CXX=$CXX                     \
+            CFLAGS="$CFLAGS" CXXFLAGS="$CFLAGS" \
+            --disable-binutils                  \
+            --disable-ld                        \
+            --disable-gold                      \
+            --disable-gas                       \
+            --disable-gprof                     \
+            --disable-gprofng                   \
+            --disable-sim                       \
+            --disable-intl                      \
+            --disable-dependency-tracking       \
+            --with-system-readline              \
+            --with-system-zlib                  \
+            --with-python=/usr/bin/python3      \
+            --with-curses                       \
+            --enable-tui                        \
+            --prefix=$HOME/GDB/
+          make -j 3
+          make install-gdb
+    - name: Test
+      run: |
+          cd ../build
+          make check-gdb RUNTESTFLAGS="CC_FOR_TARGET=$CC CXX_FOR_TARGET=$CXX"
