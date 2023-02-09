@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
-      run:  sudo apt install texinfo libgmp-dev bison flex libncurses-dev libreadline-dev dejagnu
+      run:  sudo apt install texinfo libgmp-dev libmpfr-dev bison flex libncurses-dev libreadline-dev dejagnu
     - name: Build
       run: |
           mkdir ../build && cd ../build
