@@ -20621,6 +20621,9 @@ ac_res=$ac_cv_search_waddstr
 if test "$ac_res" != no; then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
 
+$as_echo "#define HAVE_LIBCURSES 1" >>confdefs.h
+
+
 fi
 
 
